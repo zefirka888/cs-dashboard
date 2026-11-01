@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="CS Dashboard — панель игровой статистики CS2">
+  <title>CS Dashboard</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <header class="topbar">
+    <a class="brand" href="./" aria-label="CS Dashboard">
+      <svg class="brand__mark" viewBox="0 0 56 56" aria-hidden="true">
+        <defs>
+          <linearGradient id="brand-stroke" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="#e0c8ff"/>
+            <stop offset="1" stop-color="#7d8cff"/>
+          </linearGradient>
+          <linearGradient id="brand-fill" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#8f7bff" stop-opacity=".5"/>
+            <stop offset="1" stop-color="#2d2475" stop-opacity=".2"/>
+          </linearGradient>
+        </defs>
+        <path d="M28 3 L50 15.5 V40.5 L28 53 L6 40.5 V15.5 Z"
+              fill="url(#brand-fill)" stroke="url(#brand-stroke)"
+              stroke-width="2.5" stroke-linejoin="round"/>
+        <circle cx="28" cy="28" r="10" fill="none" stroke="url(#brand-stroke)" stroke-width="2.5"/>
+        <path d="M28 12V19M28 37V44M12 28H19M37 28H44"
+              stroke="url(#brand-stroke)" stroke-width="2.5" stroke-linecap="round"/>
+        <circle cx="28" cy="28" r="2.6" fill="#ffffff"/>
+      </svg>
+
+      <span class="brand__text">
+        <span class="brand__name">
+          <span class="brand__cs">CS</span><span class="brand__dash">Dashboard</span>
+        </span>
+        <span class="brand__tag">Панель игровой статистики</span>
+      </span>
+    </a>
+
+    <div class="topbar__info">
+      <span class="pill" id="widget-count">Виджетов: 0</span>
+    </div>
+  </header>
+
+  <main class="page">
+
+    <!-- Верхнее складное меню: библиотека виджетов -->
+    <details class="fold" id="library" open>
+      <summary class="fold__summary">
+        <span class="fold__label">
+          <span class="fold__title">Библиотека виджетов</span>
+          <span class="fold__hint">Перетащите карточку на панель или нажмите «+»</span>
+        </span>
+        <span class="fold__arrow" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
+        </span>
+      </summary>
+
+      <div class="fold__content">
+        <ul class="library__list">
+
+          <li class="tile" draggable="true" data-widget-type="todo">
+            <span class="tile__icon tile__icon--violet" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M9 6h11M9 12h11M9 18h11"/><path d="M3.5 6.2l1.2 1.2 2-2.2M3.5 12.2l1.2 1.2 2-2.2M3.5 18.2l1.2 1.2 2-2.2"/></svg>
+            </span>
+            <span class="tile__info">
+              <strong class="tile__title">Тренировочный план</strong>
+              <span class="tile__desc">Задачи на тренировки и разбор тактик</span>
+            </span>
+            <button type="button" class="tile__add" aria-label="Добавить виджет «Тренировочный план»">+</button>
+          </li>
+
+          <li class="tile" draggable="true" data-widget-type="skins">
+            <span class="tile__icon tile__icon--blue" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M12 3l8 5v8l-8 5-8-5V8z"/><path d="M4 8l8 5 8-5M12 13v8"/></svg>
+            </span>
+            <span class="tile__info">
+              <strong class="tile__title">Каталог скинов</strong>
+              <span class="tile__desc">Поиск, редкость и случайный скин</span>
+            </span>
+            <button type="button" class="tile__add" aria-label="Добавить виджет «Каталог скинов»">+</button>
+          </li>
+
+          <li class="tile" draggable="true" data-widget-type="deals">
+            <span class="tile__icon tile__icon--pink" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M3 12.5V4h8.5L21 13.5 13.5 21z"/><circle cx="7.8" cy="8.3" r="1.3"/></svg>
+            </span>
+            <span class="tile__info">
+              <strong class="tile__title">Скидки на игры</strong>
+              <span class="tile__desc">Актуальные распродажи в магазинах</span>
+            </span>
+            <button type="button" class="tile__add" aria-label="Добавить виджет «Скидки на игры»">+</button>
+          </li>
+
+          <li class="tile" draggable="true" data-widget-type="profile">
+            <span class="tile__icon tile__icon--indigo" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-6 8-6s8 2 8 6"/></svg>
+            </span>
+            <span class="tile__info">
+              <strong class="tile__title">Профиль игрока <span class="badge">демо</span></strong>
+              <span class="tile__desc">K/D, победы и часы в игре</span>
+            </span>
+            <button type="button" class="tile__add" aria-label="Добавить виджет «Профиль игрока (демо)»">+</button>
+          </li>
+
+        </ul>
+      </div>
+    </details>
+
+    <!-- Панель: сюда падают карточки, JS добавляет виджеты -->
+    <section class="dashboard" id="dashboard" aria-label="Панель виджетов">
+      <div class="empty-state" id="empty-hint">
+        <span class="empty-state__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
+        </span>
+        <p class="empty-state__title">Панель пока пуста</p>
+        <p class="empty-state__text">Перетащите виджет из библиотеки сюда</p>
+      </div>
+    </section>
+
+    <!-- Нижнее складное меню: топовый скин -->
+    <details class="fold" id="goal" open>
+      <summary class="fold__summary">
+        <span class="fold__label">
+          <span class="fold__title">Топовый скин</span>
+          <span class="fold__hint">Цель накопления</span>
+        </span>
+        <span class="fold__arrow" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
+        </span>
+      </summary>
+
+      <div class="fold__content">
+        <article class="goal">
+          <div class="goal__image">
+            <img src="icon-medium-584ec99c.png" alt="Скин Негев" loading="lazy">
+          </div>
+
+          <div class="goal__info">
+            <p class="goal__tag">Топовый скин</p>
+            <h3 class="goal__name">Негев</h3>
+
+            <dl class="goal__stats">
+              <div class="goal__stat goal__stat--price">
+                <dt>Цена</dt>
+                <dd>€ 2.5K</dd>
+              </div>
+              <div class="goal__stat">
+                <dt>Накоплено</dt>
+                <dd>500 ₽</dd>
+              </div>
+            </dl>
+
+            <div class="progress" role="progressbar" aria-label="Накоплено на скин"
+                 aria-valuemin="0" aria-valuemax="100" aria-valuenow="0.2">
+              <div class="progress__fill" style="--value: 0.2%"></div>
+            </div>
+            <p class="goal__note">
+              <span>≈ 0,2% от цели</span>
+              <span>цель ≈ 245 000 ₽ (курс ≈ 98 ₽ за €1)</span>
+            </p>
+          </div>
+        </article>
+      </div>
+    </details>
+
+  </main>
+
+  <footer class="footer">
+    CS Dashboard · панель игровой статистики
+  </footer>
+
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>
